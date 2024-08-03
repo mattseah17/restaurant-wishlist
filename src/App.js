@@ -17,7 +17,10 @@ const App = () => {
   // Add a new restaurant
   const addRestaurant = (restaurant) => {
     setRestaurants((prevRestaurants) => {
-      const newRestaurants = [...prevRestaurants, restaurant];
+      const newRestaurants = [
+        ...prevRestaurants,
+        { ...restaurant, tags: restaurant.tags || [] },
+      ];
       return sortRestaurants(newRestaurants, sortBy);
     });
   };
@@ -47,7 +50,9 @@ const App = () => {
   const updateRestaurant = (updatedRestaurant) => {
     setRestaurants((prevRestaurants) => {
       const newRestaurants = prevRestaurants.map((r) =>
-        r.id === updatedRestaurant.id ? updatedRestaurant : r
+        r.id === updatedRestaurant.id
+          ? { ...updatedRestaurant, tags: updatedRestaurant.tags || [] }
+          : r
       );
       return sortRestaurants(newRestaurants, sortBy);
     });
