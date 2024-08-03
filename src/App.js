@@ -4,6 +4,7 @@ import RestaurantForm from "./components/RestaurantForm";
 import RestaurantList from "./components/RestaurantList";
 import Modal from "./components/Modal";
 import ConfirmationModal from "./components/ConfirmationModal";
+import SearchBar from "./components/SearchBar";
 
 const App = () => {
   // State declarations
@@ -13,6 +14,11 @@ const App = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isConfirmModalOpen, setIsConfirmModalOpen] = useState(false);
   const [restaurantToDelete, setRestaurantToDelete] = useState(null);
+  const [searchTerms, setSearchTerms] = useState({
+    name: "",
+    cuisine: "",
+    tags: "",
+  });
 
   // Add a new restaurant
   const addRestaurant = (restaurant) => {
@@ -70,6 +76,25 @@ const App = () => {
     });
   };
 
+  // Filter by matches
+  const filteredRestaurants = restaurants.filter((restaurant) => {
+    const nameMatch = restaurant.name
+      .toLowerCase()
+      .includes(searchTerms.name.toLowerCase());
+    const cuisineMatch = restaurant.cuisine
+      .toLowerCase()
+      .includes(searchTerms.cuisine.toLowerCase());
+    const tagMatch = restaurant.tags.some((tag) =>
+      tag.toLowerCase().includes(searchTerms.tags.toLowerCase())
+    );
+    return nameMatch && cuisineMatch && (searchTerms.tags === "" || tagMatch);
+  });
+
+  const isSearching =
+    searchTerms.name !== "" ||
+    searchTerms.cuisine !== "" ||
+    searchTerms.tags !== "";
+
   // Handle sort change
   const handleSort = (criteria) => {
     setSortBy(criteria);
@@ -93,21 +118,48 @@ const App = () => {
 
   return (
     <div className="max-w-md p-4 mx-auto mt-10">
-      <h1 className="mb-4 text-2xl font-bold text-center">DineDiscovery</h1>
-      {/* Button to open add restaurant modal */}
-      <button
-        onClick={() => setIsModalOpen(true)}
-        className="w-full p-2 mb-4 text-white bg-green-500 rounded hover:bg-green-600"
-      >
-        Upload restaurant details
-      </button>
-      {/* Restaurant list component */}
+      <h1 className="mb-4 text-3xl font-bold text-center">DineDiscovery</h1>
+      <SearchBar searchTerms={searchTerms} setSearchTerms={setSearchTerms} />
+
+      <div className="flex justify-between items-center mb-4">
+        <div className="flex items-center">
+          <label
+            htmlFor="sort-select"
+            className="mr-2 font-medium text-gray-700"
+          >
+            Sort by:
+          </label>
+          <select
+            id="sort-select"
+            value={sortBy}
+            onChange={(e) => handleSort(e.target.value)}
+            className="block w-40 py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+          >
+            <option value="name">Name</option>
+            <option value="date">Date (Latest)</option>
+          </select>
+        </div>
+        <button
+          onClick={() => setIsModalOpen(true)}
+          className="px-4 py-2 text-white bg-green-500 rounded hover:bg-green-600"
+        >
+          Upload Restaurant Details
+        </button>
+      </div>
+
+      {isSearching && (
+        <p className="mb-4 text-sm text-gray-600">
+          {filteredRestaurants.length === 1
+            ? "1 result found"
+            : `${filteredRestaurants.length} results found`}
+        </p>
+      )}
+
       <RestaurantList
-        restaurants={restaurants}
+        restaurants={filteredRestaurants}
         onDelete={deleteRestaurant}
         onEdit={editRestaurant}
-        sortBy={sortBy}
-        onSort={handleSort}
+        isSearching={isSearching}
       />
       {/* Modal for adding/editing restaurant */}
       <Modal
