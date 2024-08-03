@@ -7,11 +7,13 @@ const RestaurantForm = ({
   editingRestaurant,
   onClose,
 }) => {
+  // State for form fields
   const [name, setName] = useState("");
   const [address, setAddress] = useState("");
   const [cuisine, setCuisine] = useState("");
   const [errors, setErrors] = useState({});
 
+  // Populate form when editing
   useEffect(() => {
     if (editingRestaurant) {
       setName(editingRestaurant.name);
@@ -20,6 +22,7 @@ const RestaurantForm = ({
     }
   }, [editingRestaurant]);
 
+  // Form validation
   const validate = () => {
     const newErrors = {};
     if (!name.trim()) newErrors.name = "Restaurant Name is required";
@@ -35,6 +38,7 @@ const RestaurantForm = ({
     return Object.keys(newErrors).length === 0;
   };
 
+  // Handle form submission
   const handleSubmit = (e) => {
     e.preventDefault();
     if (validate()) {
@@ -56,6 +60,7 @@ const RestaurantForm = ({
   return (
     <form onSubmit={handleSubmit} className="space-y-4">
       <p className="text-sm text-gray-600">All fields with * are required.</p>
+      {/* Restaurant Name input */}
       <div>
         <label className="block mb-1 text-sm font-bold text-gray-700">
           Restaurant Name *
@@ -69,6 +74,7 @@ const RestaurantForm = ({
         />
         {errors.name && <p className="text-xs text-red-500">{errors.name}</p>}
       </div>
+      {/* Address input */}
       <div>
         <label className="block mb-1 text-sm font-bold text-gray-700">
           Address *
@@ -84,6 +90,7 @@ const RestaurantForm = ({
           <p className="text-xs text-red-500">{errors.address}</p>
         )}
       </div>
+      {/* Cuisine input */}
       <div>
         <label className="block mb-1 text-sm font-bold text-gray-700">
           Cuisine *
@@ -99,6 +106,7 @@ const RestaurantForm = ({
           <p className="text-xs text-red-500">{errors.cuisine}</p>
         )}
       </div>
+      {/* Submit button */}
       <button
         type="submit"
         className="w-full p-2 text-white bg-blue-500 rounded hover:bg-blue-600"

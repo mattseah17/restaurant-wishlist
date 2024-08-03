@@ -1,4 +1,3 @@
-// src/components/Modal.js
 import React, { useCallback, useEffect } from "react";
 
 const Modal = ({ isOpen, onClose, children, title }) => {

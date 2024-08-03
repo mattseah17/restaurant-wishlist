@@ -6,6 +6,7 @@ import Modal from "./components/Modal";
 import ConfirmationModal from "./components/ConfirmationModal";
 
 const App = () => {
+  // State declarations
   const [restaurants, setRestaurants] = useState([]);
   const [editingRestaurant, setEditingRestaurant] = useState(null);
   const [sortBy, setSortBy] = useState("name");
@@ -13,6 +14,7 @@ const App = () => {
   const [isConfirmModalOpen, setIsConfirmModalOpen] = useState(false);
   const [restaurantToDelete, setRestaurantToDelete] = useState(null);
 
+  // Add a new restaurant
   const addRestaurant = (restaurant) => {
     setRestaurants((prevRestaurants) => {
       const newRestaurants = [...prevRestaurants, restaurant];
@@ -20,11 +22,13 @@ const App = () => {
     });
   };
 
+  // Initiate delete process
   const deleteRestaurant = (id) => {
     setRestaurantToDelete(id);
     setIsConfirmModalOpen(true);
   };
 
+  // Confirm and execute delete
   const confirmDelete = () => {
     setRestaurants((prevRestaurants) =>
       prevRestaurants.filter((r) => r.id !== restaurantToDelete)
@@ -33,11 +37,13 @@ const App = () => {
     setRestaurantToDelete(null);
   };
 
+  // Initiate edit process
   const editRestaurant = (restaurant) => {
     setEditingRestaurant(restaurant);
     setIsModalOpen(true);
   };
 
+  // Update existing restaurant
   const updateRestaurant = (updatedRestaurant) => {
     setRestaurants((prevRestaurants) => {
       const newRestaurants = prevRestaurants.map((r) =>
@@ -48,16 +54,18 @@ const App = () => {
     setEditingRestaurant(null);
   };
 
+  // Sort restaurants based on criteria
   const sortRestaurants = (restaurantList, criteria) => {
     return [...restaurantList].sort((a, b) => {
       if (criteria === "name") {
         return a.name.localeCompare(b.name);
       } else {
-        return b.id - a.id;
+        return b.id - a.id; // Assuming id represents date, larger is more recent
       }
     });
   };
 
+  // Handle sort change
   const handleSort = (criteria) => {
     setSortBy(criteria);
     setRestaurants((prevRestaurants) =>
@@ -65,11 +73,13 @@ const App = () => {
     );
   };
 
+  // Close modal
   const closeModal = () => {
     setIsModalOpen(false);
     setEditingRestaurant(null);
   };
 
+  // Initial sort on component mount
   useEffect(() => {
     setRestaurants((prevRestaurants) =>
       sortRestaurants(prevRestaurants, "name")
@@ -78,15 +88,15 @@ const App = () => {
 
   return (
     <div className="max-w-md p-4 mx-auto mt-10">
-      <h1 className="mb-4 text-2xl font-bold text-center">
-        Restaurant Wishlist
-      </h1>
+      <h1 className="mb-4 text-2xl font-bold text-center">DineDiscovery</h1>
+      {/* Button to open add restaurant modal */}
       <button
         onClick={() => setIsModalOpen(true)}
         className="w-full p-2 mb-4 text-white bg-green-500 rounded hover:bg-green-600"
       >
         Upload restaurant details
       </button>
+      {/* Restaurant list component */}
       <RestaurantList
         restaurants={restaurants}
         onDelete={deleteRestaurant}
@@ -94,6 +104,7 @@ const App = () => {
         sortBy={sortBy}
         onSort={handleSort}
       />
+      {/* Modal for adding/editing restaurant */}
       <Modal
         isOpen={isModalOpen}
         onClose={closeModal}
@@ -110,11 +121,12 @@ const App = () => {
           onClose={closeModal}
         />
       </Modal>
+      {/* Confirmation modal for delete action */}
       <ConfirmationModal
         isOpen={isConfirmModalOpen}
         onClose={() => setIsConfirmModalOpen(false)}
         onConfirm={confirmDelete}
-        message="Are you sure you want to remove this restaurant?"
+        message="Are you sure you want to remove details of this restaurant?"
       />
     </div>
   );

@@ -1,4 +1,3 @@
-// src/components/RestaurantItem.js
 import React from "react";
 
 const RestaurantItem = ({ restaurant, onDelete, onEdit }) => {

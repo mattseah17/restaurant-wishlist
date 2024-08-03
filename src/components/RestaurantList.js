@@ -1,10 +1,10 @@
-// src/components/RestaurantList.js
 import React from "react";
 import RestaurantItem from "./RestaurantItem";
 
 const RestaurantList = ({ restaurants, onDelete, onEdit, sortBy, onSort }) => {
   return (
     <div>
+      {/* Sorting dropdown */}
       <div className="mb-4 flex items-center">
         <label htmlFor="sort-select" className="mr-2 font-medium text-gray-700">
           Sort by:
@@ -19,6 +19,7 @@ const RestaurantList = ({ restaurants, onDelete, onEdit, sortBy, onSort }) => {
           <option value="date">Date (Latest)</option>
         </select>
       </div>
+      {/* List of restaurants */}
       {restaurants.map((restaurant) => (
         <RestaurantItem
           key={restaurant.id}
