@@ -196,7 +196,7 @@ const App = () => {
         </div>
 
         {isSearching && (
-          <p className="mb-4 text-sm text-gray-600">
+          <p className="mb-4 text-base text-gray-600">
             {filteredRestaurants.length === 1
               ? "1 result found"
               : `${filteredRestaurants.length} results found`}

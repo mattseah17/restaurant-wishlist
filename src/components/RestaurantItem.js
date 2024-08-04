@@ -2,7 +2,7 @@ import React from "react";
 
 const RestaurantItem = ({ restaurant, onDelete, onEdit }) => {
   return (
-    <div className="bg-white shadow-md rounded-lg overflow-hidden">
+    <div className="bg-white shadow-md rounded-lg overflow-hidden hover:scale-105 duration-100">
       <div className="p-4">
         <h3 className="font-bold text-xl mb-2">{restaurant.name}</h3>
         <p className="text-gray-700 text-base mb-1">{restaurant.address}</p>

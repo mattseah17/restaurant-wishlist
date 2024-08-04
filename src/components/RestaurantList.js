@@ -4,7 +4,7 @@ import RestaurantItem from "./RestaurantItem";
 const RestaurantList = ({ restaurants, onDelete, onEdit, isSearching }) => {
   if (restaurants.length === 0) {
     return (
-      <div className="text-center py-8">
+      <div className="text-center py-8 bg-white opacity-50 roboto-slab-label text-base">
         <p className="text-xl text-gray-600">
           {isSearching ? "No results found" : "No restaurants added yet"}
         </p>
