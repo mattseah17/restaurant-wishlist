@@ -1,4 +1,3 @@
-// src/components/RestaurantList.js
 import React from "react";
 import RestaurantItem from "./RestaurantItem";
 
@@ -19,7 +18,7 @@ const RestaurantList = ({ restaurants, onDelete, onEdit, isSearching }) => {
   }
 
   return (
-    <div>
+    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
       {restaurants.map((restaurant) => (
         <RestaurantItem
           key={restaurant.id}

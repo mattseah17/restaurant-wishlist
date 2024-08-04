@@ -1,16 +1,19 @@
-// src/App.js
+/* eslint-disable jsx-a11y/anchor-is-valid */
 import React, { useState, useEffect } from "react";
 import RestaurantForm from "./components/RestaurantForm";
 import RestaurantList from "./components/RestaurantList";
 import Modal from "./components/Modal";
 import ConfirmationModal from "./components/ConfirmationModal";
 import SearchBar from "./components/SearchBar";
+import { Menu, MenuButton, MenuItem, MenuItems } from "@headlessui/react";
+import { ChevronDownIcon } from "@heroicons/react/20/solid";
+import backgroundImage from "./background2.png";
 
 const App = () => {
   // State declarations
   const [restaurants, setRestaurants] = useState([]);
   const [editingRestaurant, setEditingRestaurant] = useState(null);
-  const [sortBy, setSortBy] = useState("name");
+  const [sortBy, setSortBy] = useState("date");
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isConfirmModalOpen, setIsConfirmModalOpen] = useState(false);
   const [restaurantToDelete, setRestaurantToDelete] = useState(null);
@@ -24,8 +27,8 @@ const App = () => {
   const addRestaurant = (restaurant) => {
     setRestaurants((prevRestaurants) => {
       const newRestaurants = [
+        { ...restaurant, tags: restaurant.tags || [], id: Date.now() },
         ...prevRestaurants,
-        { ...restaurant, tags: restaurant.tags || [] },
       ];
       return sortRestaurants(newRestaurants, sortBy);
     });
@@ -71,7 +74,7 @@ const App = () => {
       if (criteria === "name") {
         return a.name.localeCompare(b.name);
       } else {
-        return b.id - a.id; // Assuming id represents date, larger is more recent
+        return b.id - a.id; // Date sorting is now the default
       }
     });
   };
@@ -112,79 +115,125 @@ const App = () => {
   // Initial sort on component mount
   useEffect(() => {
     setRestaurants((prevRestaurants) =>
-      sortRestaurants(prevRestaurants, "name")
+      sortRestaurants(prevRestaurants, "date")
     );
   }, []);
 
   return (
-    <div className="max-w-md p-4 mx-auto mt-10">
-      <h1 className="mb-4 text-3xl font-bold text-center">DineDiscovery</h1>
-      <SearchBar searchTerms={searchTerms} setSearchTerms={setSearchTerms} />
-
-      <div className="flex justify-between items-center mb-4">
-        <div className="flex items-center">
-          <label
-            htmlFor="sort-select"
-            className="mr-2 font-medium text-gray-700"
+    <div
+      className="App mx-auto min-h-screen"
+      style={{
+        backgroundImage: `url(${backgroundImage})`,
+        backgroundSize: "cover",
+        backgroundPosition: "center",
+        backgroundRepeat: "no-repeat",
+        backgroundAttachment: "fixed",
+      }}
+    >
+      <div className="p-4 mx-auto">
+        <h1 className="mt-10 mb-10 text-5xl text-center roboto-slab-header">
+          DineDiscovery
+        </h1>
+        <SearchBar searchTerms={searchTerms} setSearchTerms={setSearchTerms} />
+        <div className="flex flex-col items-center justify-center mt-10">
+          <button
+            onClick={() => setIsModalOpen(true)}
+            className="px-4 py-2 text-white bg-pink-500 rounded hover:bg-pink-600"
           >
-            Sort by:
-          </label>
-          <select
-            id="sort-select"
-            value={sortBy}
-            onChange={(e) => handleSort(e.target.value)}
-            className="block w-40 py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
-          >
-            <option value="name">Name</option>
-            <option value="date">Date (Latest)</option>
-          </select>
+            Upload Restaurant Details
+          </button>
         </div>
-        <button
-          onClick={() => setIsModalOpen(true)}
-          className="px-4 py-2 text-white bg-green-500 rounded hover:bg-green-600"
-        >
-          Upload Restaurant Details
-        </button>
-      </div>
 
-      {isSearching && (
-        <p className="mb-4 text-sm text-gray-600">
-          {filteredRestaurants.length === 1
-            ? "1 result found"
-            : `${filteredRestaurants.length} results found`}
-        </p>
-      )}
+        <div className="flex flex-col items-center justify-center mb-4 mt-4">
+          <div className="flex items-center">
+            <label
+              htmlFor="sort-select"
+              className="mr-2 font-medium text-gray-700 roboto-slab-label"
+            >
+              Sort by:
+            </label>
+            <Menu as="div" className="relative inline-block text-left">
+              <MenuButton className="inline-flex w-full justify-center gap-x-1.5 rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50">
+                {sortBy === "name" ? "Name" : "Date (Latest)"}
+                <ChevronDownIcon
+                  className="-mr-1 h-5 w-5 text-gray-400"
+                  aria-hidden="true"
+                />
+              </MenuButton>
 
-      <RestaurantList
-        restaurants={filteredRestaurants}
-        onDelete={deleteRestaurant}
-        onEdit={editRestaurant}
-        isSearching={isSearching}
-      />
-      {/* Modal for adding/editing restaurant */}
-      <Modal
-        isOpen={isModalOpen}
-        onClose={closeModal}
-        title={
-          editingRestaurant
-            ? "Edit Restaurant Details"
-            : "Upload Restaurant Details"
-        }
-      >
-        <RestaurantForm
-          onAddRestaurant={addRestaurant}
-          onUpdateRestaurant={updateRestaurant}
-          editingRestaurant={editingRestaurant}
-          onClose={closeModal}
+              <MenuItems className="absolute right-0 z-10 mt-2 w-56 origin-top-right rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
+                <div className="py-1">
+                  <MenuItem>
+                    {({ active }) => (
+                      <a
+                        href="#"
+                        className={`${
+                          active ? "bg-gray-100 text-gray-900" : "text-gray-700"
+                        } block px-4 py-2 text-sm`}
+                        onClick={() => handleSort("date")}
+                      >
+                        Date (Latest)
+                      </a>
+                    )}
+                  </MenuItem>
+                  <MenuItem>
+                    {({ active }) => (
+                      <a
+                        href="#"
+                        className={`${
+                          active ? "bg-gray-100 text-gray-900" : "text-gray-700"
+                        } block px-4 py-2 text-sm`}
+                        onClick={() => handleSort("name")}
+                      >
+                        Name
+                      </a>
+                    )}
+                  </MenuItem>
+                </div>
+              </MenuItems>
+            </Menu>
+          </div>
+        </div>
+
+        {isSearching && (
+          <p className="mb-4 text-sm text-gray-600">
+            {filteredRestaurants.length === 1
+              ? "1 result found"
+              : `${filteredRestaurants.length} results found`}
+          </p>
+        )}
+
+        <RestaurantList
+          restaurants={filteredRestaurants}
+          onDelete={deleteRestaurant}
+          onEdit={editRestaurant}
+          isSearching={isSearching}
         />
-      </Modal>
-      {/* Confirmation modal for delete action */}
-      <ConfirmationModal
-        isOpen={isConfirmModalOpen}
-        onClose={() => setIsConfirmModalOpen(false)}
-        onConfirm={confirmDelete}
-        message="Are you sure you want to remove details of this restaurant?"
-      />
+        {/* Modal for adding/editing restaurant */}
+        <Modal
+          isOpen={isModalOpen}
+          onClose={closeModal}
+          title={
+            editingRestaurant
+              ? "Edit Restaurant Details"
+              : "Upload Restaurant Details"
+          }
+        >
+          <RestaurantForm
+            onAddRestaurant={addRestaurant}
+            onUpdateRestaurant={updateRestaurant}
+            editingRestaurant={editingRestaurant}
+            onClose={closeModal}
+          />
+        </Modal>
+        {/* Confirmation modal for delete action */}
+        <ConfirmationModal
+          isOpen={isConfirmModalOpen}
+          onClose={() => setIsConfirmModalOpen(false)}
+          onConfirm={confirmDelete}
+          message="Are you sure you want to remove details of this restaurant?"
+        />
+      </div>
     </div>
   );
 };
