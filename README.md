@@ -98,3 +98,7 @@ Additional components:
    - Localized content and currency handling
 
 This tech stack and architecture provide a solid foundation for building a scalable, performant, and secure restaurant wishlist application. The choices made allow for rapid development and easy scaling as the user base grows, while also considering important non-functional aspects of the system.
+
+## Live Demo
+
+The application is deployed and can be accessed at: [https://melodic-sprite-9d8d21.netlify.app](https://melodic-sprite-9d8d21.netlify.app)
