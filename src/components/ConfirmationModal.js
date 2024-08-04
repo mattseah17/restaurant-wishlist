@@ -18,7 +18,7 @@ const ConfirmationModal = ({ isOpen, onClose, onConfirm, message }) => {
           </div>
           <div className="flex items-center justify-end p-6 border-t border-solid border-blueGray-200 rounded-b">
             <button
-              className="px-6 py-2 mb-1 mr-1 text-sm font-bold text-red-500 uppercase transition-all duration-150 ease-linear outline-none background-transparent focus:outline-none"
+              className="px-6 py-2 mb-1 mr-1 text-sm font-bold text-black-500 uppercase transition-all duration-150 ease-linear outline-none background-transparent focus:outline-none"
               type="button"
               onClick={onClose}
             >

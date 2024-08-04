@@ -1,70 +1,100 @@
-# Getting Started with Create React App
+# DineDiscovery - Restaurant Record Application
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+## High-Level System Architecture
 
-## Available Scripts
+![Architecture Diagram](./images/archi_diagram.png)
 
-In the project directory, you can run:
+The system architecture consists of three main components:
 
-### `npm start`
+1. Frontend:
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+   - React.js single-page application
+   - Tailwind CSS for styling
+   - Hosted on a CDN for fast global access
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+2. Backend:
 
-### `npm test`
+   - Node.js with Express.js
+   - RESTful API endpoints
+   - JWT for authentication
+   - Hosted on scalable cloud infrastructure (e.g., AWS Elastic Beanstalk)
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+3. Database:
+   - MongoDB for flexible schema and scalability
+   - Hosted on MongoDB Atlas for managed services
 
-### `npm run build`
+Additional components:
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+- Redis cache for improved read performance
+- AWS S3 for image storage (if there are restaurant photos uploaded)
+- Cloudflare for DDoS protection and CDN
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+## Tech Stack Rationale
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+### Frontend
 
-### `npm run eject`
+- React.js: Chosen for its component-based architecture, which allows for reusable UI elements and efficient rendering through its virtual DOM. It also has a large ecosystem and community support.
+- Tailwind CSS: Provides utility-first CSS, allowing for rapid UI development and easy customization. It also results in smaller CSS file sizes compared to traditional frameworks.
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+### Backend
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+- Node.js with Express.js: Provides a lightweight, flexible backend that can handle asynchronous operations efficiently. It shares the JavaScript language with the frontend, allowing for code reuse and easier full-stack development.
+- RESTful API: Ensures a stateless, scalable architecture that's easy to extend and maintain.
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+### Database
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+- MongoDB: A NoSQL database that offers flexibility in data schema, which is beneficial for a product that may evolve rapidly. It also provides good scalability and performance for read-heavy operations.
 
-## Learn More
+### Additional Technologies
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+- Redis: Used as a caching layer to reduce database load and improve response times for frequently accessed data.
+- AWS S3: Provides reliable, scalable storage for user-uploaded images.
+- JWT (JSON Web Tokens): Offers a secure, stateless method for user authentication.
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+## Non-Functional Considerations
 
-### Code Splitting
+1. Performance:
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+   - CDN usage for static assets to reduce latency
+   - Redis caching to improve read performance
+   - Database indexing for faster queries
+   - Lazy loading of images and pagination of restaurant lists
 
-### Analyzing the Bundle Size
+2. Security:
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+   - JWT for secure authentication
+   - HTTPS for all communications
+   - Input sanitization to prevent XSS attacks
+   - Rate limiting to prevent brute force attacks
+   - Regular security audits and dependency updates
 
-### Making a Progressive Web App
+3. Scalability:
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
+   - Horizontally scalable backend using containerization (e.g., Docker)
+   - Database sharding for handling large datasets
+   - Load balancing for distributing traffic
 
-### Advanced Configuration
+4. Reliability:
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
+   - Redundancy in cloud infrastructure
+   - Regular backups of the database
+   - Monitoring and alerting system for quick issue detection
 
-### Deployment
+5. Maintainability:
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
+   - Clear code structure and documentation
+   - Use of TypeScript for improved type safety and developer experience
+   - Automated testing (unit, integration, and end-to-end tests)
+   - CI/CD pipeline for streamlined deployments
 
-### `npm run build` fails to minify
+6. Accessibility:
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+   - Adherence to WCAG guidelines
+   - Keyboard navigation support
+   - Screen reader compatibility
+
+7. Internationalization:
+   - Support for multiple languages using i18n libraries
+   - Localized content and currency handling
+
+This tech stack and architecture provide a solid foundation for building a scalable, performant, and secure restaurant wishlist application. The choices made allow for rapid development and easy scaling as the user base grows, while also considering important non-functional aspects of the system.
